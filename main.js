@@ -1,8 +1,9 @@
-const readline = require('node:readline');
-const r1 = readline.createInterface({ 
-    input:process.stdin, 
-    output:process.stdout
-});
+// const readline = require('node:readline');
+// const r1 = readline.createInterface({ 
+//     input:process.stdin, 
+//     output:process.stdout
+// }); 
+
 
 const gameBoard = (function (){ 
     const board = [[[],[],[]],[[],[],[]],[[],[],[]]];  
@@ -34,6 +35,7 @@ const players = (function(){
     return {getPlayer1,getPlayer2};
 })();  
 
+/*
 async function playGame(){ 
     const player1 = players.getPlayer1(); 
     const player2 = players.getPlayer2();   
@@ -62,11 +64,31 @@ async function playGame(){
             positions.push([row,col]);
             gameBoard.displayBoard();  
 
-            if (gameOver(positions)){ return;}
+            if (gameOver(positions)){ 
+            r1.close();
+            return; 
+            }
         } 
         
     } 
 }  
+*/
+const domBoard = [];
+
+const dom = function (){  
+    for (let i = 0; i < 9; i++){ 
+        let num = "" + i;
+        let row = document.getElementById(num);  
+        domBoard.push(row); 
+        row.addEventListener('click', function(){ 
+            changeColor(i);
+        }) 
+    }
+}
+
+function changeColor(idx){ 
+    domBoard[idx].style.backgroundColor = "yellow";
+}
 
 function getRow() {
     return new Promise((resolve) => {
@@ -110,8 +132,8 @@ function gameOver(arr){
     return false;
 }
 
-
-playGame();
+dom();
+// playGame();
 
 
 

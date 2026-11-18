@@ -1,0 +1,15 @@
+*{ 
+    box-sizing: border-box; 
+    padding: 0;
+} 
+
+table{ 
+    background-color: brown; 
+    width: 50vw; 
+    height: 80vh; 
+    margin: 0 auto;
+} 
+
+td{ 
+    border: solid blueviolet;
+}
