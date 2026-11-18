@@ -37,29 +37,35 @@ const players = (function(){
 async function playGame(){ 
     const player1 = players.getPlayer1(); 
     const player2 = players.getPlayer2();   
-    const turns = 0; 
-    const arrPly = [player1,player2];
+    const arrPly = [player1,player2]; 
+    const positions = [];
     gameBoard.displayBoard(); 
 
-    // while (!gameOver()){ 
+    while (true){ 
         for (let i = 0; i < arrPly.length; i++){   
             let row = 0; 
-            let column= 0; 
-            while (gameOver()){ 
+            let col = 0; 
+            while (true){ 
                 console.log("It's Player " + (i + 1) + "'s turn"); 
                 row = await getRow(); 
-                col = await getCol();  
+                col = await getCol();   
 
-                if (gameBoard.getBoard()[row][col].length != 0){  
-                    console.log("Invalid position. Please choose another position on the board");
-                } else{ 
+                if (row < 0 || row > 2 || col < 0 || col > 2){ 
+                    console.log("Invalid coordinates, try again")
+                } else if (gameBoard.getBoard()[row][col].length != 0){  
+                    console.log("Position is occupied. Please choose another position on the board");
+                } else { 
                     break;
                 } 
             }
-            gameBoard.getBoard()[row][col] = arrPly[i].symbol; 
-            gameBoard.displayBoard();
-        }
-    // } 
+            gameBoard.getBoard()[row][col] = arrPly[i].symbol;  
+            positions.push([row,col]);
+            gameBoard.displayBoard();  
+
+            if (gameOver(positions)){ return;}
+        } 
+        
+    } 
 }  
 
 function getRow() {
@@ -78,30 +84,34 @@ function getCol() {
     });
 }
 
-playGame();
-
-function gameOver(){  
+function gameOver(arr){  
     let board = gameBoard.getBoard();
     if (
-    (board[0][0] && board[0][1] && board[0][2]) || 
-        (board[0][0] && board[0][1] && board[0][2]) || 
-    (board[0][0] && board[0][1] && board[0][2]) || 
-
-    
-    )
+    (board[0][0] == "X" && board[0][1] == "X" && board[0][2] == "X" )|| (board[1][0] == "X" && board[1][1] =="X" && board[1][2] == "X") || 
+    (board[2][0] == "X" && board[2][1] == "X" && board[2][2] == "X") 
+    ||(board[0][0] == "X" && board[1][0] =="X" && board[2][0] == "X") ||  (board[0][1] == "X" && board[1][1] == "X" && board[2][1] == "X") || 
+    (board[0][2] == "X" && board[1][2] == "X" && board[2][2] == "X") || 
+    (board[0][2] == "X" && board[1][1] == "X" && board[2][0] == "X") || (board[0][0] == "X" && board[1][1] == "X" && board[2][2] == "X")){ 
+            console.log("Player 1 is the winner"); 
+            return true;
+    } else if( 
+         (board[0][0] == "O" && board[0][1] == "O" && board[0][2] == "O" )|| (board[1][0] == "O" && board[1][1] =="O" && board[1][2] == "O") || 
+    (board[2][0] == "O" && board[2][1] == "O" && board[2][2] == "O") 
+    ||(board[0][0] == "O" && board[1][0] =="O" && board[2][0] == "O") ||  (board[0][1] == "O" && board[1][1] == "O" && board[2][1] == "O") || 
+    (board[0][2] == "O" && board[1][2] == "O" && board[2][2] == "O") || 
+    (board[0][2] == "O" && board[1][1] == "O" && board[2][0] == "O") || (board[0][0] == "O" && board[1][1] == "O" && board[2][2] == "O")
+    ) {  
+        console.log ("Player 2 is the winner"); 
+        return true;
+    } else if (arr.length == 9){ 
+        console.log("It's a tie"); 
+        return true;
+    } 
+    return false;
 }
 
 
-// console.log(gameBoard.getBoard()[0][2].push("X")); 
-
-
-// playGame();
-// console.log(gameBoard.displayBoard());
-
-
-
-// displayBoard(disboard);
-
+playGame();
 
 
 
