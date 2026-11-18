@@ -1,12 +1,7 @@
-// const readline = require('node:readline');
-// const r1 = readline.createInterface({ 
-//     input:process.stdin, 
-//     output:process.stdout
-// }); 
-
+const domBoard = [];
 
 const gameBoard = (function (){ 
-    const board = [[[],[],[]],[[],[],[]],[[],[],[]]];  
+    const board = [[],[],[],[],[],[],[],[],[]];  
     const getBoard = function(){ 
         return board;
     } 
@@ -35,30 +30,19 @@ const players = (function(){
     return {getPlayer1,getPlayer2};
 })();  
 
-/*
-async function playGame(){ 
+function playGame(){ 
     const player1 = players.getPlayer1(); 
     const player2 = players.getPlayer2();   
     const arrPly = [player1,player2]; 
     const positions = [];
-    gameBoard.displayBoard(); 
+    dom();
 
     while (true){ 
         for (let i = 0; i < arrPly.length; i++){   
-            let row = 0; 
-            let col = 0; 
+            let idx = 0;
             while (true){ 
                 console.log("It's Player " + (i + 1) + "'s turn"); 
-                row = await getRow(); 
-                col = await getCol();   
-
-                if (row < 0 || row > 2 || col < 0 || col > 2){ 
-                    console.log("Invalid coordinates, try again")
-                } else if (gameBoard.getBoard()[row][col].length != 0){  
-                    console.log("Position is occupied. Please choose another position on the board");
-                } else { 
-                    break;
-                } 
+                   
             }
             gameBoard.getBoard()[row][col] = arrPly[i].symbol;  
             positions.push([row,col]);
@@ -72,8 +56,17 @@ async function playGame(){
         
     } 
 }  
-*/
-const domBoard = [];
+
+function clickEvent(idx){ 
+    let index = idx; 
+    
+
+
+
+
+
+
+}
 
 const dom = function (){  
     for (let i = 0; i < 9; i++){ 
@@ -86,43 +79,25 @@ const dom = function (){
     }
 }
 
-function changeColor(idx){ 
-    domBoard[idx].style.backgroundColor = "yellow";
-}
 
-function getRow() {
-    return new Promise((resolve) => {
-        r1.question("Choose row: ", (r) => {
-            resolve(Number(r));
-        });
-    });
-}
-
-function getCol() {
-    return new Promise((resolve) => {
-        r1.question("Choose column: ", (col) => {
-            resolve(Number(col));
-        });
-    });
-}
 
 function gameOver(arr){  
     let board = gameBoard.getBoard();
     if (
-    (board[0][0] == "X" && board[0][1] == "X" && board[0][2] == "X" )|| (board[1][0] == "X" && board[1][1] =="X" && board[1][2] == "X") || 
-    (board[2][0] == "X" && board[2][1] == "X" && board[2][2] == "X") 
-    ||(board[0][0] == "X" && board[1][0] =="X" && board[2][0] == "X") ||  (board[0][1] == "X" && board[1][1] == "X" && board[2][1] == "X") || 
-    (board[0][2] == "X" && board[1][2] == "X" && board[2][2] == "X") || 
-    (board[0][2] == "X" && board[1][1] == "X" && board[2][0] == "X") || (board[0][0] == "X" && board[1][1] == "X" && board[2][2] == "X")){ 
+    (board[0] == "X" && board[1] == "X" && board[2] == "X" )|| (board[3] == "X" && board[4] =="X" && board[5] == "X") || 
+    (board[6] == "X" && board[7] == "X" && board[8] == "X") ||(board[0] == "X" && board[3] =="X" && board[6] == "X") ||  
+    (board[1] == "X" && board[4] == "X" && board[7] == "X") || 
+    (board[2] == "X" && board[5] == "X" && board[8] == "X") || 
+    (board[0] == "X" && board[4] == "X" && board[8] == "X") || (board[2] == "X" && board[4] == "X" && board[8] == "X")){ 
             console.log("Player 1 is the winner"); 
             return true;
     } else if( 
-         (board[0][0] == "O" && board[0][1] == "O" && board[0][2] == "O" )|| (board[1][0] == "O" && board[1][1] =="O" && board[1][2] == "O") || 
-    (board[2][0] == "O" && board[2][1] == "O" && board[2][2] == "O") 
-    ||(board[0][0] == "O" && board[1][0] =="O" && board[2][0] == "O") ||  (board[0][1] == "O" && board[1][1] == "O" && board[2][1] == "O") || 
-    (board[0][2] == "O" && board[1][2] == "O" && board[2][2] == "O") || 
-    (board[0][2] == "O" && board[1][1] == "O" && board[2][0] == "O") || (board[0][0] == "O" && board[1][1] == "O" && board[2][2] == "O")
-    ) {  
+        (board[0] == "O" && board[1] == "O" && board[2] == "O" )|| (board[3] == "O" && board[4] =="0" && board[5] == "O") || 
+        (board[6] == "O" && board[7] == "O" && board[8] == "O") ||(board[0] == "O" && board[3] =="O" && board[6] == "O") ||  
+        (board[1] == "O" && board[4] == "O" && board[7] == "O") || 
+        (board[2] == "O" && board[5] == "O" && board[8] == "O") || 
+        (board[0] == "O" && board[4] == "O" && board[8] == "O") || (board[2] == "O" && board[4] == "O" && board[8] == "O")    
+    ){  
         console.log ("Player 2 is the winner"); 
         return true;
     } else if (arr.length == 9){ 
