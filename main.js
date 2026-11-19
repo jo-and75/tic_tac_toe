@@ -1,7 +1,10 @@
-const domBoard = [];
+const domBoard = []; 
+const header = document.getElementById("header"); 
+let turn = 0;
+let gameFlag = false;
 
 const gameBoard = (function (){ 
-    const board = [[],[],[],[],[],[],[],[],[]];  
+    const board = ["","","","","","","","",""];  
     const getBoard = function(){ 
         return board;
     } 
@@ -30,85 +33,100 @@ const players = (function(){
     return {getPlayer1,getPlayer2};
 })();  
 
-function playGame(){ 
-    const player1 = players.getPlayer1(); 
-    const player2 = players.getPlayer2();   
-    const arrPly = [player1,player2]; 
-    const positions = [];
-    dom();
+function validPos(idx){ 
+    if (gameFlag){ 
+        return;
+    }else if (gameBoard.getBoard()[idx] == "X" || gameBoard.getBoard()[idx] == "O" ){ 
+        header.textContent = "Invalid position, please choose another position. "; 
+        return false;            
+    } else{ 
+        if (turn % 2 ==0) {
+            domBoard[idx].textContent = players.getPlayer1().symbol;
+            gameBoard.getBoard()[idx] = players.getPlayer1().symbol;    
+        } else { 
+            domBoard[idx].textContent = players.getPlayer2().symbol;
+            gameBoard.getBoard()[idx] = players.getPlayer2().symbol;  
+        }
+        turn++; 
 
-    while (true){ 
-        for (let i = 0; i < arrPly.length; i++){   
-            let idx = 0;
-            while (true){ 
-                console.log("It's Player " + (i + 1) + "'s turn"); 
-                   
-            }
-            gameBoard.getBoard()[row][col] = arrPly[i].symbol;  
-            positions.push([row,col]);
-            gameBoard.displayBoard();  
-
-            if (gameOver(positions)){ 
-            r1.close();
-            return; 
-            }
+        if (gameOver()){ 
+            gameFlag = true;
+        } else if (turn % 2 == 0){ 
+            header.textContent = "It's Player One's turn";
+        } else if (turn % 2 != 0) { 
+            header.textContent = "It's Player Two's turn";
         } 
-        
-    } 
-}  
-
-function clickEvent(idx){ 
-    let index = idx; 
-    
-
-
-
-
-
-
+    }  
+    return true;
 }
 
-const dom = function (){  
+function playGame(idx){
+    if (gameFlag){ 
+        return; 
+    }
+    
+    if (validPos(idx)){ 
+        return;
+    }
+     
+}  
+
+
+const dom = function (){   
     for (let i = 0; i < 9; i++){ 
         let num = "" + i;
         let row = document.getElementById(num);  
         domBoard.push(row); 
+        
         row.addEventListener('click', function(){ 
-            changeColor(i);
-        }) 
-    }
+            playGame(i);
+        })  
+    } 
 }
 
 
+function restartGame(){ 
+    for (let i = 0; i < domBoard.length; i++){ 
+        domBoard[i].textContent = "";
+    } 
 
-function gameOver(arr){  
+    for(let i = 0; i < gameBoard.getBoard().length; i++){ 
+        gameBoard.getBoard()[i] = "";
+    }
+    turn = 0;
+    gameFlag = false; 
+    header.textContent = "WELCOME: CLICK ON THE GRID TO START PLAYING"; 
+    
+}
+
+function gameOver(){  
     let board = gameBoard.getBoard();
     if (
     (board[0] == "X" && board[1] == "X" && board[2] == "X" )|| (board[3] == "X" && board[4] =="X" && board[5] == "X") || 
     (board[6] == "X" && board[7] == "X" && board[8] == "X") ||(board[0] == "X" && board[3] =="X" && board[6] == "X") ||  
     (board[1] == "X" && board[4] == "X" && board[7] == "X") || 
     (board[2] == "X" && board[5] == "X" && board[8] == "X") || 
-    (board[0] == "X" && board[4] == "X" && board[8] == "X") || (board[2] == "X" && board[4] == "X" && board[8] == "X")){ 
-            console.log("Player 1 is the winner"); 
+    (board[0] == "X" && board[4] == "X" && board[8] == "X") || (board[2] == "X" && board[4] == "X" && board[6] == "X")){ 
+            header.textContent = "Player 1 is the winner"; 
             return true;
     } else if( 
-        (board[0] == "O" && board[1] == "O" && board[2] == "O" )|| (board[3] == "O" && board[4] =="0" && board[5] == "O") || 
+        (board[0] == "O" && board[1] == "O" && board[2] == "O" )|| (board[3] == "O" && board[4] =="O" && board[5] == "O") || 
         (board[6] == "O" && board[7] == "O" && board[8] == "O") ||(board[0] == "O" && board[3] =="O" && board[6] == "O") ||  
         (board[1] == "O" && board[4] == "O" && board[7] == "O") || 
         (board[2] == "O" && board[5] == "O" && board[8] == "O") || 
-        (board[0] == "O" && board[4] == "O" && board[8] == "O") || (board[2] == "O" && board[4] == "O" && board[8] == "O")    
+        (board[0] == "O" && board[4] == "O" && board[8] == "O") || (board[2] == "O" && board[4] == "O" && board[6] == "O")    
     ){  
-        console.log ("Player 2 is the winner"); 
+        header.textContent = "Player 2 is the winner"; 
         return true;
-    } else if (arr.length == 9){ 
-        console.log("It's a tie"); 
+    } else if (turn == 9){ 
+        header.textContent = "It's a tie"; 
         return true;
     } 
     return false;
 }
 
 dom();
-// playGame();
+
 
 
 
