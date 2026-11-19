@@ -16,7 +16,7 @@ const gameBoard = (function (){
         return "";
     }
     return {getBoard,displayBoard};
-})();
+})(); //gameBoard function
 
 const players = (function(){  
 
@@ -31,7 +31,7 @@ const players = (function(){
     }
     
     return {getPlayer1,getPlayer2};
-})();  
+})(); //players function
 
 function validPos(idx){ 
     if (gameFlag){ 
@@ -58,7 +58,7 @@ function validPos(idx){
         } 
     }  
     return true;
-}
+}//check Position function
 
 function playGame(idx){
     if (gameFlag){ 
@@ -69,7 +69,7 @@ function playGame(idx){
         return;
     }
      
-}  
+}  //playGame function
 
 
 const dom = function (){   
@@ -82,7 +82,7 @@ const dom = function (){
             playGame(i);
         })  
     } 
-}
+} // render DOM
 
 
 function restartGame(){ 
@@ -97,7 +97,7 @@ function restartGame(){
     gameFlag = false; 
     header.textContent = "WELCOME: CLICK ON THE GRID TO START PLAYING"; 
     
-}
+} // restarts game
 
 function gameOver(){  
     let board = gameBoard.getBoard();
@@ -123,7 +123,7 @@ function gameOver(){
         return true;
     } 
     return false;
-}
+} // checks if game is over
 
 dom();
 
